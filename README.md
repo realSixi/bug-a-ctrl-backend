@@ -12,6 +12,7 @@ _nur zu Dokumentationszwecken_
 
 ```json
 {
+  "created" : "2023-10-05T14:48:00.000Z",
   "user_id" : 9998777,
   "username": "realSixi",
   "joint_a": 0,
@@ -28,6 +29,7 @@ _nur zu Dokumentationszwecken_
 
 ```json
 {
+  "created" : "2023-10-05T14:48:00.000Z",
   "type": "BUY_TIME",
   "transaction_id": 12345,
   "user_id" : 9998877,
@@ -40,6 +42,7 @@ _nur zu Dokumentationszwecken_
 
 ```json
 {
+  "created" : "2023-10-05T14:48:00.000Z",
   "type": "STATUS",
   "is_available": true
 }
