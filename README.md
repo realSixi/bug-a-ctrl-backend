@@ -8,7 +8,7 @@ _nur zu Dokumentationszwecken_
 
 #### Topic `bugactrl/switchtime/`
 
-##### Steurern des Baggers
+##### Steuern des Baggers
 
 ```json
 {
