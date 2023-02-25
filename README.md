@@ -22,7 +22,7 @@ _nur zu Dokumentationszwecken_
 ```
 
 
-#### Topic `bugactrl/control`
+#### Topic `bugactrl/control/`
 
 ##### Zeit "kaufen" 
 
@@ -32,5 +32,15 @@ _nur zu Dokumentationszwecken_
   "transaction_id": 12345,
   "user_id" : 9998877,
   "duration": "PT5M"
+}
+```
+
+
+##### Status
+
+```json
+{
+  "type": "STATUS",
+  "is_available": true
 }
 ```
