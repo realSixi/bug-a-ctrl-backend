@@ -1,17 +1,16 @@
 import mqtt from 'mqtt';
-import { MQTT_PASSWORD, MQTT_PORT, MQTT_SERVER, MQTT_TOPICS, MQTT_USER } from '@config';
-import { log } from 'winston';
-import { logger } from '@utils/logger';
-import { BuyTimeMessage } from '@interfaces/mqtt.interfaces';
+import {MQTT_PASSWORD, MQTT_PORT, MQTT_SERVER, MQTT_USER} from '@config';
+import {logger} from '@utils/logger';
+import {BuyTimeMessage, StatusMessage} from '@interfaces/mqtt.interfaces';
 import creditService from '@services/credit.service';
-import User from '@models/users.model';
 import usersService from '@services/users.service';
-import twitchService from '@services/twitch.service';
 import dayjs from 'dayjs';
 import sseService from '@services/sse.service';
+import statusService from "@services/status.service";
 
 class MqttService {
   client = null;
+
 
   constructor() {
     this.initClient();
@@ -25,12 +24,17 @@ class MqttService {
           logger.info('MQTT Subscribed');
         }
       });
+
     });
 
     this.client.on('message', (topic, payload, packet) => {
       try {
         const json = JSON.parse(payload.toString());
+
         switch (json.type) {
+          case 'STATUS': {
+            this.handleStatus(json as StatusMessage)
+          }
           case 'BUY_TIME': {
             this.handleBuyTime(json as BuyTimeMessage);
           }
@@ -52,6 +56,11 @@ class MqttService {
       charged: dayjs.duration(message.duration).asSeconds(),
       total: await creditService.getCurrentCredit(user.id),
     });
+  }
+
+  private async handleStatus(message: StatusMessage){
+    statusService.setEnabled(message.is_available);
+    logger.info(`set enabledStatus to ${message.is_available}`)
   }
 
   private initClient() {

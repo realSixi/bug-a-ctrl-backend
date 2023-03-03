@@ -8,12 +8,18 @@ import {HttpException} from '@exceptions/HttpException';
 import sseService from '@services/sse.service';
 import dayjs from 'dayjs';
 import Constants from "@/config/constants";
+import StatusService from "@services/status.service";
 
 class BugacontrolService {
   private mqttService = MqttService;
   private transactionService = new TransactionService();
+  private statusService = StatusService;
 
   public async ignite(user: UsersModel) {
+    if (!this.statusService.isEnabled()) {
+      throw new HttpException(403, 'api is currently disabled');
+    }
+
     const activeSession = await this.transactionService.getActiveSession();
     if (activeSession !== null && activeSession.user_id !== user.id) {
       throw new HttpException(409, 'already in use by another user!');
@@ -57,6 +63,10 @@ class BugacontrolService {
   }
 
   public async move(move: { joint_a: number; joint_b: number; joint_c: number; vertical_axis: number }, user: UsersModel) {
+    if (!this.statusService.isEnabled()) {
+      throw new HttpException(403, 'api is currently disabled');
+    }
+
     const currentSession = await this.transactionService.getActiveSessionForUser(user);
     if (!currentSession) {
       logger.warn(`user ${user.id} has no active session!`);

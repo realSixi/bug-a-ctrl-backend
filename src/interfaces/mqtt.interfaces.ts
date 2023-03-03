@@ -5,6 +5,12 @@ export interface BuyTimeMessage {
   duration: string;
 }
 
+
+export interface StatusMessage {
+  type: "STATUS";
+  is_available: boolean;
+}
+
 export interface BugAControlMessage {
   created: string;
   user_id: number;
