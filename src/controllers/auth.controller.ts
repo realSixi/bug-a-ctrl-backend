@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from 'express';
 
 import authService from '@services/auth.service';
 import randomUtils from '@utils/random.utils';
-import {TWITCH_CLIENT_ID} from '@config';
+import {TWITCH_CLIENT_ID, TWITCH_REDIRECT_URI} from '@config';
 import twitchService from '@services/twitch.service';
 import usersService from '@services/users.service';
 
@@ -12,14 +12,13 @@ class AuthController {
       const csrfState = randomUtils.generateRandomHex(20);
       res.cookie('csrfState', csrfState, {maxAge: 1000 * 60 * 5});
 
-      console.log("Request HEader", req.headers.host)
 
       const query = {
         scope: '',
         client_id: TWITCH_CLIENT_ID,
         state: csrfState,
         response_type: 'code',
-        redirect_uri: `${req.protocol}://${req.get('host')}/auth/callback`,
+        redirect_uri: TWITCH_REDIRECT_URI,
       };
 
       res.redirect(`https://id.twitch.tv/oauth2/authorize?${new URLSearchParams(query).toString()}`);
