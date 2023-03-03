@@ -34,9 +34,11 @@ class MqttService {
         switch (json.type) {
           case 'STATUS': {
             this.handleStatus(json as StatusMessage)
+            break;
           }
           case 'BUY_TIME': {
             this.handleBuyTime(json as BuyTimeMessage);
+            break;
           }
         }
       } catch (e) {

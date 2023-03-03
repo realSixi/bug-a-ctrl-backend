@@ -45,7 +45,7 @@ networks:
   backend:
     driver: bridge
   mariadb-network:
-    driver: bridge
+    external: true
 
 volumes:
   data:
