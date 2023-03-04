@@ -5,7 +5,7 @@ import UserController from '@controllers/user.controller';
 import StatusController from '@controllers/status.controller';
 
 class UserRoute implements Routes {
-  public path = '/api/status';
+  public path = '/api/bugacontrol/status';
   public router = Router();
   public statusController = new StatusController();
 
