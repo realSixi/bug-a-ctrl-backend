@@ -5,6 +5,7 @@ import transactionService from '@services/transaction.service';
 import sseService from '@services/sse.service';
 import { logger } from '@utils/logger';
 import creditService from '@services/credit.service';
+import statusService from "@services/status.service";
 
 class UserController {
   private transactionService = new TransactionService();
@@ -12,6 +13,7 @@ class UserController {
     try {
       const activeSession = await this.transactionService.getActiveSession();
       const result = {
+        enabled: statusService.isEnabled(),
         inUse: activeSession !== null,
         inUseByCurrentUser: activeSession ? activeSession.user_id === req.user.id : false,
         total: await creditService.getCurrentCredit(req.user.id),

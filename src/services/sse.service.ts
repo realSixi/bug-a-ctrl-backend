@@ -4,6 +4,7 @@ import TransactionService from '@services/transaction.service';
 import constants from '@/config/constants';
 import creditService from '@services/credit.service';
 import usersService from '@services/users.service';
+import statusService from "@services/status.service";
 
 class SseService {
   private timeout: any;
@@ -70,6 +71,7 @@ class SseService {
     for (const user_id of users) {
       sseService.sendMessageToUser(user_id, {
         type: 'state',
+        enabled: statusService.isEnabled(),
         inUse: !!session,
         inUseByCurrentUser: session ? session.user_id === user_id : false,
 
