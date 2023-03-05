@@ -1,159 +1,159 @@
-openapi: 3.0.3
-info:
-  title: Projektion Bagger API
-  contact:
-    name: ProjektionTV Community / realSixi
-    url: https://discord.gg/92JNBJR
-  version: 1.0.0
-externalDocs:
-  description: ProjektionTV Discord
-  url: https://discord.gg/92JNBJR
-servers:
-  - url: https://bagger.projektion.tv
-components:
-  securitySchemes:
-    ApiKeyAuth:
-      description: get your apikey at https://bagger.projektion.tv/
-      type: apiKey
-      in: header
-      name: api-key
-security:
-  - ApiKeyAuth: []
-paths:
-  /api/bugacontrol/ignite:
-    post:
-      summary: Starts or ends a session to control the excavator
-      description: |
-        There are some preconditions to start a session:
-        - you must have enough time credit. Recharge your digger time via the channel point action on Twitch!
-        - no other session is already started
-        - the api must be enabled; it's disabled e.g. if the stream is currently not online
-
-        A session will end automatically after a configured time (default: 20 seconds). If you want to use the excavator
-        for a longer duration, resend the ignite request periodically (e.g. every 10 seconds).
-
-        If you send `false`, the session will be ended. There is a minimum time that will be charged (default: 10 seconds). Within the minimum time your session is still active and you still can send move commands.
-      requestBody:
-        description: start or end session
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                on:
-                  type: boolean
-      responses:
-        200:
-          description: request has been accepted
-          content:
-            application/json:
-              schema:
-                properties:
-                  status:
-                    enum: ['OK']
-        409:
-          description: request failed, see response message for details
-        403:
-          description: api is disabled or insufficient time credits
-        401:
-          description: no or invalid api-key
-  /api/bugacontrol/move:
-    post:
-      summary: move the excavator
-      requestBody:
-        description: instructions how long to move each axis (in milliseconds). If you send another request while move instructions are still processed, the old instructions will be overwritten.
-        content:
-          application/json:
-            schema:
-              properties:
-                joint_a:
-                  type: number
-                  minimum: -1000
-                  maximum: 1000
-                  example: 0
-                joint_b:
-                  type: number
-                  minimum: -1000
-                  maximum: 1000
-                  example: 500
-                joint_c:
-                  type: number
-                  minimum: -1000
-                  maximum: 1000
-                  example: 0
-                vertical_axis:
-                  type: number
-                  minimum: -1000
-                  maximum: 1000
-                  example: 1000
-      responses:
-        200:
-          description: request accepted
-        403:
-          description: api is disabled or not ignited for current user
-        401:
-          description: no or invalid api-key
-  /api/bugacontrol/status:
-    get:
-      summary: get the current status
-      responses:
-        200:
-          description: the current status
-          content:
-            application/json:
-              schema:
-                properties:
-                  enabled:
-                    type: boolean
-                    description: ignite/move api is enabled
-                    example:
-                      false
-                  inUse:
-                    type: boolean
-                    description: there is a active session
-                    example:
-                      true
-                  inUseByCurrentUser:
-                    type: boolean
-                    description: the current active session belongs to the current user
-                    example:
-                      true
-                  total:
-                    type: number
-                    description: your time credits in seconds
-                    example:
-                      1337
-        401:
-          description: no or invalid api-key
-  /api/bugacontrol/status/subscribe:
-    get:
-      summary: get the current status
-      responses:
-        200:
-          description: status updates as text/event-stream pushed to client
-          content:
-            text/event-stream:
-              schema:
-                properties:
-                  enabled:
-                    type: boolean
-                    description: ignite/move api is enabled
-                    example:
-                      false
-                  inUse:
-                    type: boolean
-                    description: there is a active session
-                    example:
-                      true
-                  inUseByCurrentUser:
-                    type: boolean
-                    description: the current active session belongs to the current user
-                    example:
-                      true
-                  total:
-                    type: number
-                    description: your time credits in seconds
-                    example:
-                      1337
-        401:
-          description: no or invalid api-key
+#openapi: 3.0.3
+#info:
+#  title: Projektion Bagger API
+#  contact:
+#    name: ProjektionTV Community / realSixi
+#    url: https://discord.gg/92JNBJR
+#  version: 1.0.0
+#externalDocs:
+#  description: ProjektionTV Discord
+#  url: https://discord.gg/92JNBJR
+#servers:
+#  - url: https://bagger.projektion.tv
+#components:
+#  securitySchemes:
+#    ApiKeyAuth:
+#      description: get your apikey at https://bagger.projektion.tv/
+#      type: apiKey
+#      in: header
+#      name: api-key
+#security:
+#  - ApiKeyAuth: []
+#paths:
+#  /api/bugacontrol/ignite:
+#    post:
+#      summary: Starts or ends a session to control the excavator
+#      description: |
+#        There are some preconditions to start a session:
+#        - you must have enough time credit. Recharge your digger time via the channel point action on Twitch!
+#        - no other session is already started
+#        - the api must be enabled; it's disabled e.g. if the stream is currently not online
+#
+#        A session will end automatically after a configured time (default: 20 seconds). If you want to use the excavator
+#        for a longer duration, resend the ignite request periodically (e.g. every 10 seconds).
+#
+#        If you send `false`, the session will be ended. There is a minimum time that will be charged (default: 10 seconds). Within the minimum time your session is still active and you still can send move commands.
+#      requestBody:
+#        description: start or end session
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              properties:
+#                on:
+#                  type: boolean
+#      responses:
+#        200:
+#          description: request has been accepted
+#          content:
+#            application/json:
+#              schema:
+#                properties:
+#                  status:
+#                    enum: ['OK']
+#        409:
+#          description: request failed, see response message for details
+#        403:
+#          description: api is disabled or insufficient time credits
+#        401:
+#          description: no or invalid api-key
+#  /api/bugacontrol/move:
+#    post:
+#      summary: move the excavator
+#      requestBody:
+#        description: instructions how long to move each axis (in milliseconds). If you send another request while move instructions are still processed, the old instructions will be overwritten.
+#        content:
+#          application/json:
+#            schema:
+#              properties:
+#                joint_a:
+#                  type: number
+#                  minimum: -1000
+#                  maximum: 1000
+#                  example: 0
+#                joint_b:
+#                  type: number
+#                  minimum: -1000
+#                  maximum: 1000
+#                  example: 500
+#                joint_c:
+#                  type: number
+#                  minimum: -1000
+#                  maximum: 1000
+#                  example: 0
+#                vertical_axis:
+#                  type: number
+#                  minimum: -1000
+#                  maximum: 1000
+#                  example: 1000
+#      responses:
+#        200:
+#          description: request accepted
+#        403:
+#          description: api is disabled or not ignited for current user
+#        401:
+#          description: no or invalid api-key
+#  /api/bugacontrol/status:
+#    get:
+#      summary: get the current status
+#      responses:
+#        200:
+#          description: the current status
+#          content:
+#            application/json:
+#              schema:
+#                properties:
+#                  enabled:
+#                    type: boolean
+#                    description: ignite/move api is enabled
+#                    example:
+#                      false
+#                  inUse:
+#                    type: boolean
+#                    description: there is a active session
+#                    example:
+#                      true
+#                  inUseByCurrentUser:
+#                    type: boolean
+#                    description: the current active session belongs to the current user
+#                    example:
+#                      true
+#                  total:
+#                    type: number
+#                    description: your time credits in seconds
+#                    example:
+#                      1337
+#        401:
+#          description: no or invalid api-key
+#  /api/bugacontrol/status/subscribe:
+#    get:
+#      summary: get the current status
+#      responses:
+#        200:
+#          description: status updates as text/event-stream pushed to client
+#          content:
+#            text/event-stream:
+#              schema:
+#                properties:
+#                  enabled:
+#                    type: boolean
+#                    description: ignite/move api is enabled
+#                    example:
+#                      false
+#                  inUse:
+#                    type: boolean
+#                    description: there is a active session
+#                    example:
+#                      true
+#                  inUseByCurrentUser:
+#                    type: boolean
+#                    description: the current active session belongs to the current user
+#                    example:
+#                      true
+#                  total:
+#                    type: number
+#                    description: your time credits in seconds
+#                    example:
+#                      1337
+#        401:
+#          description: no or invalid api-key
