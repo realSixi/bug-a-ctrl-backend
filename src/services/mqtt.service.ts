@@ -62,6 +62,7 @@ class MqttService {
 
   private async handleStatus(message: StatusMessage){
     statusService.setEnabled(message.is_available);
+    await sseService.sendState();
     logger.info(`set enabledStatus to ${message.is_available}`)
   }
 
