@@ -29,6 +29,7 @@ class BugacontrolService {
 
     if (currentCredit < Constants.session_reservation_time) {
       await sseService.sendState();
+      await this.mqttService.sendIgnite(user.id, user.username, false);
       throw new HttpException(403, `insufficient credits, only ${currentCredit} left.`)
     }
     console.log('currentCredit', currentCredit);
@@ -44,6 +45,7 @@ class BugacontrolService {
 
     await creditService.withdrawAmount(user, constants.session_reservation_time);
     await sseService.sendState();
+    await this.mqttService.sendIgnite(user.id, user.username, true);
   }
 
   public async unignite(user: UsersModel) {
@@ -60,6 +62,7 @@ class BugacontrolService {
       await sseService.sendState();
     }, Math.max(0, endIn.diff(dayjs())) + 500);
 
+    await this.mqttService.sendIgnite(user.id, user.username, false);
   }
 
   public async move(move: { joint_a: number; joint_b: number; joint_c: number; vertical_axis: number }, user: UsersModel) {

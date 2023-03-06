@@ -16,6 +16,9 @@ class SseService {
   }[] = [];
 
   constructor() {
+    setInterval(()=>{
+      this._sendState().catch(e => logger.warn(e));
+    }, 30 * 1000)
   }
 
   public registerClient(user_id: number, response: Response) {

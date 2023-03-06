@@ -17,6 +17,7 @@ class AuthRoute implements Routes {
   private initializeRoutes() {
     this.router.get(`${this.path}login`, this.authController.twitchAuthRequestCode);
     this.router.get(`${this.path}callback`, this.authController.twitchAuthCallback);
+    this.router.get(`${this.path}logout`, this.authController.logout);
   }
 }
 

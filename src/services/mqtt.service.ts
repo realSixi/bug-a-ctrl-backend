@@ -89,6 +89,19 @@ class MqttService {
       }),
     );
   }
+
+  public sendIgnite(user_id: number, username: string, ignited: boolean) {
+    this.client.publish(
+      'bugactrl/control',
+      JSON.stringify({
+        type: 'ignite',
+        created: new Date(),
+        user_id,
+        username,
+        ignited
+      }),
+    );
+  }
 }
 
 const mqttService = new MqttService();
