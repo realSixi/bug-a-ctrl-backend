@@ -22,7 +22,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
       } else {
         next(new HttpException(401, "Wrong authentication token"));
       }
-    } else if (ApiKey && ApiKey instanceof String) {
+    } else if (ApiKey && typeof ApiKey === 'string') {
       const findUser = await usersService.findByApikey(ApiKey.trim());
       if (findUser) {
         req.user = findUser;
